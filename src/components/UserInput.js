@@ -1,78 +1,80 @@
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-import SendIcon from './icons/SendIcon';
-import EmojiIcon from './icons/EmojiIcon';
-import EmojiPicker from './emoji-picker/EmojiPicker';
-
+import PropTypes from 'prop-types'
+import React, { Component } from 'react'
+import SendIcon from './icons/SendIcon'
+import EmojiIcon from './icons/EmojiIcon'
+import EmojiPicker from './emoji-picker/EmojiPicker'
+import moment from 'moment'
 
 class UserInput extends Component {
-
   constructor() {
-    super();
+    super()
     this.state = {
-      inputActive: false,
-    };
+      inputActive: false
+    }
   }
 
   handleKey(event) {
     if (event.keyCode === 13 && !event.shiftKey) {
-      this._submitText(event);
+      this._submitText(event)
     }
   }
 
   _submitText(event) {
-    event.preventDefault();
-    const text = this.userInput.textContent;
+    event.preventDefault()
+    const text = this.userInput.textContent
+    const { authorInfo } = this.props
     if (text && text.length > 0) {
-      this.props.onSubmit({
-        author: 'me',
+      const info = {
+        authorInfo,
+        authorType: 'me',
         type: 'text',
-        data: { text }
-      });
-      this.userInput.innerHTML = '';
+        data: { text },
+        timestamp: moment().unix()
+      }
+      this.props.onSubmit(info)
+      this.userInput.innerHTML = ''
     }
   }
 
   _handleEmojiPicked(emoji) {
     this.props.onSubmit({
-      author: 'me',
+      authorType: 'me',
       type: 'emoji',
       data: { emoji }
-    });
+    })
   }
 
   render() {
     return (
       <form className={`sc-user-input ${(this.state.inputActive ? 'active' : '')}`}>
         <div
-          role="button"
-          tabIndex="0"
-          onFocus={() => { this.setState({ inputActive: true }); }}
-          onBlur={() => { this.setState({ inputActive: false }); }}
-          ref={(e) => { this.userInput = e; }}
+          role='button'
+          tabIndex='0'
+          onFocus={() => { this.setState({ inputActive: true }) }}
+          onBlur={() => { this.setState({ inputActive: false }) }}
+          ref={e => { this.userInput = e }}
           onKeyDown={this.handleKey.bind(this)}
-          contentEditable="true"
-          placeholder="Write a reply..."
-          className="sc-user-input--text"
-        >
-        </div>
-        <div className="sc-user-input--buttons">
-          <div className="sc-user-input--button"></div>
-          <div className="sc-user-input--button">
-            {this.props.showEmoji && <EmojiIcon onEmojiPicked={this._handleEmojiPicked.bind(this)} />}
+          contentEditable='true'
+          placeholder='Write a reply...'
+          className='sc-user-input--text'
+        />
+        <div className='sc-user-input--buttons'>
+          <div className='sc-user-input--button'>
+            {this.props.showEmoji &&
+            <EmojiIcon onEmojiPicked={this._handleEmojiPicked.bind(this)} />}
           </div>
-          <div className="sc-user-input--button">
+          <div className='sc-user-input--button'>
             <SendIcon onClick={this._submitText.bind(this)} />
           </div>
         </div>
       </form>
-    );
+    )
   }
 }
 
 UserInput.propTypes = {
   onSubmit: PropTypes.func.isRequired,
   showEmoji: PropTypes.bool
-};
+}
 
-export default UserInput;
+export default UserInput

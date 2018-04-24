@@ -1,40 +1,47 @@
-import React, {Component} from 'react'
-import {render} from 'react-dom'
-import {Launcher} from '../../src'
-import messageHistory from './messageHistory';
-import TestArea from './TestArea';
-import Header from './Header';
-import Footer from './Footer';
-import monsterImgUrl from "./../assets/monster.png";
-import Highlight from "react-highlight.js";
+import React, { Component } from 'react'
+import { render } from 'react-dom'
+import { Launcher } from '../../src'
+import messageHistory from './messageHistory'
+import TestArea from './TestArea'
+import Header from './Header'
+import Footer from './Footer'
+import monsterImgUrl from './../assets/monster.png'
+import Highlight from 'react-highlight.js'
 import './../assets/styles'
 
 
-
 class Demo extends Component {
-
   constructor() {
-    super();
+    super()
     this.state = {
       messageList: messageHistory,
       newMessagesCount: 0,
       isOpen: false
-    };
+    }
+    this.randomId = Math.random()
+    this.socket = new WebSocket('ws://localhost:8081')
+    this.socket.onmessage = event => {
+      const { messageList, newMessagesCount } = this.state
+      const incomingMessage = JSON.parse(event.data)
+      this.setState({
+        newMessagesCount: newMessagesCount + 1,
+        messageList: [ ...messageList, incomingMessage ]
+      })
+      // showMessage(incomingMessage);
+    }
   }
 
   _onMessageWasSent(message) {
-    this.setState({
-      messageList: [...this.state.messageList, message]
-    })
+    this.socket.send(JSON.stringify(message))
   }
 
   _sendMessage(text) {
     if (text.length > 0) {
       const newMessagesCount = this.state.isOpen ? this.state.newMessagesCount : this.state.newMessagesCount + 1
       this.setState({
-        newMessagesCount: newMessagesCount,
-        messageList: [...this.state.messageList, {
-          author: 'them',
+        newMessagesCount,
+        messageList: [ ...this.state.messageList, {
+          authorType: 'them',
           type: 'text',
           data: { text }
         }]
@@ -46,31 +53,45 @@ class Demo extends Component {
     this.setState({
       isOpen: !this.state.isOpen,
       newMessagesCount: 0
+    }, () => {
+      // if don't use setTimeout focus not working
+      setTimeout(()=> {
+        const el = document.querySelector('.sc-user-input--text')
+        console.log(el.focus)
+        el.focus()
+      }, 100)
     })
   }
 
   render() {
-    return <div>
+    return (<div>
       <Header />
       <TestArea
         onMessage={this._sendMessage.bind(this)}
       />
       <Launcher
         agentProfile={{
-          teamName: 'react-live-chat',
-          imageUrl: 'https://a.slack-edge.com/66f9/img/avatars-teams/ava_0001-34.png'
+          teamName: 'Osminog.tv Chat',
+          imageUrl: 'https://osminog.tv/static/dist/img/logo.png'
+        }}
+        authorInfo={{
+          id: this.randomId,
+          firstName: 'Daniil',
+          secondName: 'Khanin'
         }}
         onMessageWasSent={this._onMessageWasSent.bind(this)}
         messageList={this.state.messageList}
         newMessagesCount={this.state.newMessagesCount}
         handleClick={this._handleClick.bind(this)}
+        messageItem={props => <div>{props.text}</div>}
         isOpen={this.state.isOpen}
+        timeFormat='DD/MM/YYYY'
         showEmoji
       />
-      <img className="demo-monster-img" src={monsterImgUrl} />
+      <img className='demo-monster-img' src={monsterImgUrl} />
       <Footer />
-    </div>
+    </div>)
   }
 }
 
-render(<Demo/>, document.querySelector('#demo'))
+render(<Demo />, document.querySelector('#demo'))

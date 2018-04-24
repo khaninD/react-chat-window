@@ -1,0 +1,44 @@
+{
+  "extends": "airbnb",
+  "parser": "babel-eslint",
+  "plugins": [
+    "react",
+    "import",
+    "jsx-a11y"
+  ],
+  "rules": {
+    "semi": ["error", "never"],
+    "consistent-return": 0,
+    "linebreak-style": ["error", "windows"],
+    "arrow-parens": ["error", "as-needed"],
+    "comma-dangle": ["error", "never"],
+    "react/jsx-curly-spacing": [2, "never"],
+    "react/forbid-prop-types": 0,
+    "object-curly-spacing": ["error", "always"],
+    "object-curly-newline": ["error", { "minProperties": 4, "consistent": true }],
+    "array-bracket-spacing": ["error", "always", { "objectsInArrays": false, "arraysInArrays": false }],
+    "jsx-quotes": ["error", "prefer-single"],
+    "react/prop-types": 0,
+    "react/jsx-filename-extension": 0,
+    "react/jsx-space-before-closing": 0,
+    "react/jsx-tag-spacing": ["error", { "beforeSelfClosing": "always" }],
+    "import/prefer-default-export": 0,
+    "import/no-extraneous-dependencies": 0,
+    "react/jsx-uses-react": 2,
+    "react/jsx-uses-vars": 2,
+    "react/react-in-jsx-scope": 2
+  },
+  "globals": {
+    "document": true,
+    "window": true,
+    "localStorage": true,
+    "dispatch": true,
+    "FormData": true,
+    "location": true,
+    "FileReader": true,
+    "actions": true,
+    "URL": true,
+    "confirm": true,
+    "alert": true
+  }
+}

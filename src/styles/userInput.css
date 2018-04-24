@@ -1,5 +1,6 @@
 .sc-user-input {
   min-height: 55px;
+  padding: 0 10px;
   margin: 0px;
   position: relative;
   bottom: 0;
@@ -12,7 +13,7 @@
 
 
 .sc-user-input--text {
-  width: 300px;
+  width: 100%;
   resize: none;
   border: none;
   outline: none;
@@ -41,9 +42,7 @@
 }
 
 .sc-user-input--buttons {
-  width: 100px;
-  position: absolute;
-  right: 30px;
+  margin-right: 10px;
   height: 100%;
   display: flex;
 }

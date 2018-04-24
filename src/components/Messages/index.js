@@ -5,28 +5,32 @@ import chatIconUrl from './../../assets/chat-icon.svg'
 
 
 class Message extends Component {
-
   _renderMessageOfType(type) {
-    switch(type) {
+    const { message, timeFormat } = this.props
+    switch (type) {
       case 'text':
-        return <TextMessage {...this.props.message} />
+        return <TextMessage {...this.props} />
       case 'emoji':
-        return <EmojiMessage {...this.props.message} />
+        return <EmojiMessage {...this.props} />
     }
   }
 
-  render () {
-    let contentClassList = [
-      "sc-message--content",
-      (this.props.message.author === "me" ? "sent" : "received")
-    ];
+  render() {
+    const {
+      message: { authorInfo, type },
+      authorInfo: { id: authorId }
+    } = this.props
+    const typeClass = authorInfo && authorInfo.id === authorId ? 'sent' : 'received'
     return (
-      <div className="sc-message">
-        <div className={contentClassList.join(" ")}>
-          <div className="sc-message--avatar" style={{
+      <div className='sc-message'>
+        <div className={`sc-message--content ${typeClass}`}>
+          <div
+            className='sc-message--avatar'
+            style={{
             backgroundImage: `url(${chatIconUrl})`
-          }}></div>
-          {this._renderMessageOfType(this.props.message.type)}
+          }}
+          />
+          {this._renderMessageOfType(type)}
         </div>
       </div>)
   }
