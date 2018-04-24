@@ -22,11 +22,9 @@ class Launcher extends Component {
       this.setState({
         isOpen: !isOpen
       }, () => {
-        setTimeout(()=> {
-          const el = document.querySelector('.sc-user-input--text')
-          console.log(el.focus)
-          el.focus()
-        }, 1000)
+        setTimeout(() => {
+          document.querySelector('.sc-user-input--text').focus()
+        }, 100)
       })
     }
   }

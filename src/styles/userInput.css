@@ -73,6 +73,8 @@
   outline: none;
 }
 
+.sc-user-input--send-icon-wrapper:focus {outline:0;}
+
 .sc-user-input--send-icon path {
   fill: rgba(86, 88, 103, 0.3);
 }

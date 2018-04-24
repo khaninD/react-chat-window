@@ -37,7 +37,8 @@ class Demo extends Component {
 
   _sendMessage(text) {
     if (text.length > 0) {
-      const newMessagesCount = this.state.isOpen ? this.state.newMessagesCount : this.state.newMessagesCount + 1
+      const newMessagesCount = this.state.isOpen ?
+        this.state.newMessagesCount : this.state.newMessagesCount + 1
       this.setState({
         newMessagesCount,
         messageList: [ ...this.state.messageList, {
@@ -55,10 +56,8 @@ class Demo extends Component {
       newMessagesCount: 0
     }, () => {
       // if don't use setTimeout focus not working
-      setTimeout(()=> {
-        const el = document.querySelector('.sc-user-input--text')
-        console.log(el.focus)
-        el.focus()
+      setTimeout(() => {
+        document.querySelector('.sc-user-input--text').focus()
       }, 100)
     })
   }
@@ -85,7 +84,7 @@ class Demo extends Component {
         handleClick={this._handleClick.bind(this)}
         messageItem={props => <div>{props.text}</div>}
         isOpen={this.state.isOpen}
-        timeFormat='DD/MM/YYYY'
+        timeFormat='HH:mm'
         showEmoji
       />
       <img className='demo-monster-img' src={monsterImgUrl} />

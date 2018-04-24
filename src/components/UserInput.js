@@ -5,6 +5,36 @@ import SendIcon from './icons/SendIcon'
 import EmojiIcon from './icons/EmojiIcon'
 import EmojiPicker from './emoji-picker/EmojiPicker'
 
+const caret = oField => {
+  console.log(oField)
+  // Initialize
+  let iCaretPos = 0
+
+  // IE Support
+  if (document.selection) {
+
+    // Set focus on the element
+    oField.focus()
+
+    // To get cursor position, get empty selection range
+    const oSel = document.selection.createRange()
+
+    // Move selection start to 0 position
+    oSel.moveStart('character', -oField.textContent.length)
+
+    // The caret position is selection length
+    iCaretPos = oSel.text.length
+  } else if (oField.selectionStart || oField.selectionStart == '0') {
+
+    // Firefox support
+    iCaretPos = oField.selectionStart
+  }
+
+  // Return results
+  return iCaretPos
+}
+
+
 class UserInput extends Component {
   constructor() {
     super()
@@ -37,15 +67,18 @@ class UserInput extends Component {
   }
 
   _handleEmojiPicked(emoji) {
+    // @TODO здесь нужно дописать код по ставке в нужное место
     const text = this.userInput.textContent
-    this.userInput.textContent = `${text}${emoji}`
+    this.caretPosition = caret(this.userInput)
+    console.log(this.caretPosition)
+    this.userInput.innerHTML += emoji
+    setTimeout(() => document.querySelector('.sc-user-input--text').focus(), 1000)
   }
 
   render() {
     return (
       <form className={`sc-user-input ${(this.state.inputActive ? 'active' : '')}`}>
-        <div
-          role='button'
+        <textarea
           tabIndex='0'
           onFocus={() => { this.setState({ inputActive: true }) }}
           onBlur={() => { this.setState({ inputActive: false }) }}
