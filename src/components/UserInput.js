@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
+import moment from 'moment'
 import SendIcon from './icons/SendIcon'
 import EmojiIcon from './icons/EmojiIcon'
 import EmojiPicker from './emoji-picker/EmojiPicker'
-import moment from 'moment'
 
 class UserInput extends Component {
   constructor() {
@@ -37,11 +37,8 @@ class UserInput extends Component {
   }
 
   _handleEmojiPicked(emoji) {
-    this.props.onSubmit({
-      authorType: 'me',
-      type: 'emoji',
-      data: { emoji }
-    })
+    const text = this.userInput.textContent
+    this.userInput.textContent = `${text}${emoji}`
   }
 
   render() {

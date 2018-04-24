@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import moment from 'moment'
 
 const TextMessage = props => {
-  const { message: { data: { text } }, timestamp, authorInfo, timeFormat } = props
+  const { message: { data: { text }, timestamp }, authorInfo, timeFormat } = props
+  console.log(timestamp)
   const messageTime = moment.unix(timestamp).format(timeFormat)
   return (
     <div className='sc-message--text'>
