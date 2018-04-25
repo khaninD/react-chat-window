@@ -3,7 +3,6 @@ import React, { Component } from 'react'
 import moment from 'moment'
 import SendIcon from './icons/SendIcon'
 import EmojiIcon from './icons/EmojiIcon'
-import EmojiPicker from './emoji-picker/EmojiPicker'
 
 const caret = oField => {
   console.log(oField)
@@ -39,7 +38,8 @@ class UserInput extends Component {
   constructor() {
     super()
     this.state = {
-      inputActive: false
+      inputActive: false,
+      messageValue: ''
     }
   }
 
@@ -49,10 +49,17 @@ class UserInput extends Component {
     }
   }
 
+  handleChange(e) {
+    const { target: { value } } = e
+    this.setState({
+      messageValue: value
+    })
+  }
+
   _submitText(event) {
     event.preventDefault()
-    const text = this.userInput.textContent
-    const { authorInfo } = this.props
+    const text = this.userInput.value
+    const { authorInfo, onSubmit } = this.props
     if (text && text.length > 0) {
       const info = {
         authorInfo,
@@ -61,31 +68,44 @@ class UserInput extends Component {
         data: { text },
         timestamp: moment().unix()
       }
-      this.props.onSubmit(info)
-      this.userInput.innerHTML = ''
+      onSubmit(info)
+      this.setState({
+        messageValue: ''
+      })
     }
   }
 
   _handleEmojiPicked(emoji) {
-    // @TODO здесь нужно дописать код по ставке в нужное место
-    const text = this.userInput.textContent
+    const { value } = this.userInput
     this.caretPosition = caret(this.userInput)
-    console.log(this.caretPosition)
-    this.userInput.innerHTML += emoji
-    setTimeout(() => document.querySelector('.sc-user-input--text').focus(), 1000)
+    const textBeforeCaret = value.slice(0, this.caretPosition)
+    const textAfterCaret = value.slice(this.caretPosition)
+    const resultValue = textBeforeCaret.concat(emoji, textAfterCaret)
+    this.setState({
+      messageValue: resultValue
+    }, () => {
+      this.userInput.setSelectionRange(
+        this.caretPosition + emoji.length,
+        this.caretPosition + emoji.length
+      )
+      this.userInput.focus()
+    })
   }
 
   render() {
+    const { placeholder } = this.props
+    const { messageValue } = this.state
     return (
       <form className={`sc-user-input ${(this.state.inputActive ? 'active' : '')}`}>
         <textarea
           tabIndex='0'
+          value={messageValue}
           onFocus={() => { this.setState({ inputActive: true }) }}
           onBlur={() => { this.setState({ inputActive: false }) }}
           ref={e => { this.userInput = e }}
-          onKeyDown={this.handleKey.bind(this)}
-          contentEditable='true'
-          placeholder='Write a reply...'
+          onKeyDown={e => this.handleKey(e)}
+          onChange={e => this.handleChange(e)}
+          placeholder={placeholder}
           className='sc-user-input--text'
         />
         <div className='sc-user-input--buttons'>

@@ -24,6 +24,7 @@
     "classnames": "^2.2.5",
     "emoji-js": "3.2.2",
     "gh-pages": "^1.0.0",
+    "lodash": "^4.17.10",
     "moment": "^2.22.1",
     "prop-types": "15.5.10",
     "react-highlight.js": "1.0.5",
@@ -60,7 +61,8 @@
     "url-loader": "^0.6.2",
     "nwb": "0.17.x",
     "react": "15.6.1",
-    "react-dom": "15.6.1"
+    "react-dom": "15.6.1",
+    "webpack": "*"
   },
   "authorType": "",
   "homepage": "",
