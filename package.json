@@ -23,6 +23,8 @@
   "dependencies": {
     "classnames": "^2.2.5",
     "emoji-js": "3.2.2",
+    "emoji-mart": "^2.5.1",
+    "emoji-picker-react": "^2.0.4",
     "gh-pages": "^1.0.0",
     "lodash": "^4.17.10",
     "moment": "^2.22.1",

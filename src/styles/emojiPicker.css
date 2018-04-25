@@ -10,6 +10,14 @@
   outline: none;
 }
 
+.emoji-mart-emoji span {
+  cursor: pointer!important;
+}
+
+.emoji-mart-skin-swatch {
+  cursor: pointer;
+}
+
 .sc-emoji-picker:after {
   content: "";
   width: 14px;

@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import moment from 'moment'
 import SendIcon from './icons/SendIcon'
 import EmojiIcon from './icons/EmojiIcon'
+import EmojiConvertor from 'emoji-js'
 
 const caret = oField => {
   console.log(oField)
@@ -41,6 +42,7 @@ class UserInput extends Component {
       inputActive: false,
       messageValue: ''
     }
+    this.emojiConvertor = new EmojiConvertor()
   }
 
   handleKey(event) {
@@ -76,17 +78,18 @@ class UserInput extends Component {
   }
 
   _handleEmojiPicked(emoji) {
+    const { native } = emoji
     const { value } = this.userInput
     this.caretPosition = caret(this.userInput)
     const textBeforeCaret = value.slice(0, this.caretPosition)
     const textAfterCaret = value.slice(this.caretPosition)
-    const resultValue = textBeforeCaret.concat(emoji, textAfterCaret)
+    const resultValue = textBeforeCaret.concat(native, textAfterCaret)
     this.setState({
       messageValue: resultValue
     }, () => {
       this.userInput.setSelectionRange(
-        this.caretPosition + emoji.length,
-        this.caretPosition + emoji.length
+        this.caretPosition + native.length,
+        this.caretPosition + native.length
       )
       this.userInput.focus()
     })

@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
-import EmojiPicker from './../emoji-picker/EmojiPicker'
-
+import 'emoji-mart/css/emoji-mart.css'
+import { Picker } from 'emoji-mart'
+import { EMOJI_LOCALE } from '../constants'
 
 class EmojiIcon extends Component {
   constructor() {
@@ -9,6 +10,29 @@ class EmojiIcon extends Component {
     this.state = {
       isActive: false
     }
+  }
+
+  componentDidMount() {
+    this.checkToShowEmojiPicker = e => {
+      const { target } = e
+      const emodjiContainer = document.querySelector('.emoji-mart')
+      if (emodjiContainer) {
+        const emojiButton = document.querySelector('.sc-user-input--emoji-icon')
+        const targetInEmojiContainer = emodjiContainer.contains(target)
+        const isEmojiButtonOrDeep = emojiButton.contains(target)
+        if (isEmojiButtonOrDeep) {
+          return
+        }
+        if (!targetInEmojiContainer) {
+          this.hideEmojiPicker()
+        }
+      }
+    }
+    document.addEventListener('click', this.checkToShowEmojiPicker)
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('click', this.checkToShowEmojiPicker)
   }
 
   hideEmojiPicker() {
@@ -31,10 +55,14 @@ class EmojiIcon extends Component {
     return (
       <div className='sc-user-input--picker-wrapper'>
         { isActive &&
-        <EmojiPicker
-          hideEmojiPicker={() => this.hideEmojiPicker()}
-          ref={emojiPicker => this.emojiPicker = emojiPicker}
-          onEmojiPicked={this.props.onEmojiPicked}
+        <Picker
+          set='emojione'
+          onSelect={onEmojiPicked}
+          style={{ position: 'absolute', bottom: '58px', right: '0' }}
+          emoji=''
+          title=''
+          emojiSize={22}
+          i18n={EMOJI_LOCALE}
         />
       }
         <button
