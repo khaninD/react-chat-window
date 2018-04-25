@@ -41,6 +41,12 @@
   -webkit-font-smoothing: subpixel-antialiased
 }
 
+.sc-message--text .header-message {
+  display:flex;
+  justify-content: space-between;
+  font-size: 12px
+}
+
 .sc-message--content.sent .sc-message--text {
   color: white;
   background-color: #4e8cff;

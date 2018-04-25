@@ -82,7 +82,6 @@ class Demo extends Component {
         messageList={this.state.messageList}
         newMessagesCount={this.state.newMessagesCount}
         handleClick={this._handleClick.bind(this)}
-        messageItem={props => <div>{props.text}</div>}
         placeholder='Введите ваше сообщение'
         isOpen={this.state.isOpen}
         timeFormat='HH:mm'
